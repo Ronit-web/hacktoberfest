@@ -1,5 +1,4 @@
-# Reservation-Management
-This is an website which manges the reservation for the hotel . 
+# Hotel Reservation
 
 # Tech Stacks Used
 
