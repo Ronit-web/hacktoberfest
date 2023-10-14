@@ -6,7 +6,6 @@ number = input("Enter a prime number:")
 
 def prime_checker(n):
   #basic-number-checking
-  print(n)
   if n <= 1:
     return False
   if n == 2 or n == 3:
