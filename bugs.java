@@ -14,7 +14,7 @@ public class bugs{
         int halfLen = (m + n + 1) / 2;
         double maxOfLeft, minOfRight;
         while (iMin <= iMax) {
-            int i = (iMin + iMax) / 2;
+            int i = (iMin + iMax) / 2; 
             int j = halfLen - i;
             if (i < m && nums2[j - 1] > nums1[i]) {
                 iMin = i + 1;
