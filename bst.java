@@ -1,49 +1,84 @@
-public class bst {
-    // Represent the node of binary tree
-    public static class Node {
-        int data;
-        Node left;
-        Node right;
+// Java program to search a given key in a given BST
 
-        public Node(int data) {
-            // Assign data to the new node, set left and right children to null
-            this.data = data;
-            this.left = null;
-            this.right = null;
-        }
-    }
+class Node {
+	int key;
+	Node left, right;
 
-    // Represent the root of binary tree
-    public Node root;
+	public Node(int item) {
+		key = item;
+		left = right = null;
+	}
+}
 
-    public bst() {
-        root = null;
-    }
+class BinarySearchTree {
+	Node root;
 
-    // factorial() will calculate the factorial of given number
-    public int factorial(int num) {
-        int fact = 1;
-        if (num == 0)
-            return 1;
-        else {
-            while (num > 1) {
-                fact = fact * num;
-                num--;
-            }
-            return fact;
-        }
-    }
+	// Constructor
+	BinarySearchTree() {
+		root = null;
+	}
 
-    // numOfBST() will calculate the total number of possible BST by calculating
-    // Catalan Number for given key
-    public int numOfBST(int key) {
-        int catalanNumber = factorial(2 * key) / (factorial(key + 1) * factorial(key));
-        return catalanNumber;
-    }
+	// A utility function to insert
+	// a new node with given key in BST
+	Node insert(Node node, int key) {
+		// If the tree is empty, return a new node
+		if (node == null) {
+			node = new Node(key);
+			return node;
+		}
 
-    public static void main(String[] args) {
-        bst bt = new bst();
-        // Display total number of possible binary search tree with key 5
-        System.out.println("Total number of possible Binary Search Trees with given key: " + bt.numOfBST(5));
-    }
+		// Otherwise, recur down the tree
+		if (key < node.key)
+			node.left = insert(node.left, key);
+		else if (key > node.key)
+			node.right = insert(node.right, key);
+
+		// Return the (unchanged) node pointer
+		return node;
+	}
+
+	// Utility function to search a key in a BST
+	Node search(Node root, int key) {
+		// Base Cases: root is null or key is present at root
+		if (root == null || root.key == key)
+			return root;
+
+		// Key is greater than root's key
+		if (root.key < key)
+			return search(root.right, key);
+
+		// Key is smaller than root's key
+		return search(root.left, key);
+	}
+
+	// Driver Code
+	public static void main(String[] args) {
+		BinarySearchTree tree = new BinarySearchTree();
+
+		// Inserting nodes
+		tree.root = tree.insert(tree.root, 50);
+		tree.insert(tree.root, 30);
+		tree.insert(tree.root, 20);
+		tree.insert(tree.root, 40);
+		tree.insert(tree.root, 70);
+		tree.insert(tree.root, 60);
+		tree.insert(tree.root, 80);
+
+		// Key to be found
+		int key = 6;
+
+		// Searching in a BST
+		if (tree.search(tree.root, key) == null)
+			System.out.println(key + " not found");
+		else
+			System.out.println(key + " found");
+
+		key = 60;
+
+		// Searching in a BST
+		if (tree.search(tree.root, key) == null)
+			System.out.println(key + " not found");
+		else
+			System.out.println(key + " found");
+	}
 }
