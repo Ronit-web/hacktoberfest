@@ -1,136 +1,84 @@
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
+// Java program to search a given key in a given BST
 
-    public TreeNode(int val) {
-        this.val = val;
-        left = null;
-        right = null;
-    }
+class Node {
+	int key;
+	Node left, right;
+
+	public Node(int item) {
+		key = item;
+		left = right = null;
+	}
 }
 
-public class bst {
-    private TreeNode root;
+class BinarySearchTree {
+	Node root;
 
-    public bst() {
-        root = null;
-    }
+	// Constructor
+	BinarySearchTree() {
+		root = null;
+	}
 
-    // Insert a value into the BST
-    public void insert(int val) {
-        root = insertRec(root, val);
-    }
+	// A utility function to insert
+	// a new node with given key in BST
+	Node insert(Node node, int key) {
+		// If the tree is empty, return a new node
+		if (node == null) {
+			node = new Node(key);
+			return node;
+		}
 
-    private TreeNode insertRec(TreeNode root, int val) {
-        if (root == null) {
-            root = new TreeNode(val);
-            return root;
-        }
+		// Otherwise, recur down the tree
+		if (key < node.key)
+			node.left = insert(node.left, key);
+		else if (key > node.key)
+			node.right = insert(node.right, key);
 
-        if (val < root.val) {
-            root.left = insertRec(root.left, val);
-        } else if (val > root.val) {
-            root.right = insertRec(root.right, val);
-        }
+		// Return the (unchanged) node pointer
+		return node;
+	}
 
-        return root;
-    }
+	// Utility function to search a key in a BST
+	Node search(Node root, int key) {
+		// Base Cases: root is null or key is present at root
+		if (root == null || root.key == key)
+			return root;
 
-    // Delete a value from the BST
-    public void delete(int val) {
-        root = deleteRec(root, val);
-    }
+		// Key is greater than root's key
+		if (root.key < key)
+			return search(root.right, key);
 
-    private TreeNode deleteRec(TreeNode root, int val) {
-        if (root == null) {
-            return root;
-        }
+		// Key is smaller than root's key
+		return search(root.left, key);
+	}
 
-        if (val < root.val) {
-            root.left = deleteRec(root.left, val);
-        } else if (val > root.val) {
-            root.right = deleteRec(root.right, val);
-        } else {
-            // Node with one child or no child
-            if (root.left == null) {
-                return root.right;
-            } else if (root.right == null) {
-                return root.left;
-            }
+	// Driver Code
+	public static void main(String[] args) {
+		BinarySearchTree tree = new BinarySearchTree();
 
-            // Node with two children, get the inorder successor
-            root.val = minValue(root.right);
+		// Inserting nodes
+		tree.root = tree.insert(tree.root, 50);
+		tree.insert(tree.root, 30);
+		tree.insert(tree.root, 20);
+		tree.insert(tree.root, 40);
+		tree.insert(tree.root, 70);
+		tree.insert(tree.root, 60);
+		tree.insert(tree.root, 80);
 
-            // Delete the inorder successor
-            root.right = deleteRec(root.right, root.val);
-        }
+		// Key to be found
+		int key = 6;
 
-        return root;
-    }
+		// Searching in a BST
+		if (tree.search(tree.root, key) == null)
+			System.out.println(key + " not found");
+		else
+			System.out.println(key + " found");
 
-    private int minValue(TreeNode root) {
-        int minValue = root.val;
-        while (root.left != null) {
-            minValue = root.left.val;
-            root = root.left;
-        }
-        return minValue;
-    }
+		key = 60;
 
-    // Search for a value in the BST
-    public boolean search(int val) {
-        return searchRec(root, val);
-    }
-
-    private boolean searchRec(TreeNode root, int val) {
-        if (root == null) {
-            return false;
-        }
-
-        if (root.val == val) {
-            return true;
-        }
-
-        if (val < root.val) {
-            return searchRec(root.left, val);
-        }
-
-        return searchRec(root.right, val);
-    }
-
-    // Perform an inorder traversal of the BST
-    public void inorder() {
-        inorderRec(root);
-    }
-
-    private void inorderRec(TreeNode root) {
-        if (root != null) {
-            inorderRec(root.left);
-            System.out.print(root.val + " ");
-            inorderRec(root.right);
-        }
-    }
-
-    public static void main(String[] args) {
-        bst tree = new bst();
-
-        tree.insert(50);
-        tree.insert(30);
-        tree.insert(20);
-        tree.insert(40);
-        tree.insert(70);
-        tree.insert(60);
-        tree.insert(80);
-
-        System.out.println("Inorder traversal of the BST:");
-        tree.inorder();
-
-        System.out.println("\nSearch for 20: " + tree.search(20));
-        System.out.println("Search for 10: " + tree.search(10));
-
-        tree.delete(20);
-        System.out.println("\nInorder traversal after deleting 20:");
-        tree.inorder();
-    }
+		// Searching in a BST
+		if (tree.search(tree.root, key) == null)
+			System.out.println(key + " not found");
+		else
+			System.out.println(key + " found");
+	}
 }
